@@ -16,6 +16,7 @@ const sequelize = new Sequelize('chatim', 'root', '', {
     password: DataTypes.STRING,
     name: DataTypes.STRING,
     profile_picture: DataTypes.STRING,
+    socket_id: DataTypes.STRING,
     last_message: Sequelize.VIRTUAL,
     elapsed_time: Sequelize.VIRTUAL
 
@@ -83,8 +84,60 @@ io.use(function(socket, next){
 })
 
 io.on('connection',async(socket) => {
-
+    const user  = await User.findOne(options={where:{id: socket.user.id}});
+    if(user){
+        user.update({socket_id: socket.id});
+        var new_messages = await Message.findAll({
+            where: {
+              to_user: socket.user.id,
+              is_received: false
+            }
+         })
+        //  console.log(new_messages);
+        socket.emit("new_messages",new_messages);
+    }else{
+        console.log("not authenticated");
+        socket.emit('disconnected',true);
+        socket.disconnect();
+        return ;
+    }
     console.log(socket.user.name+" is connected")
+
+    socket.on('new_message', async (data) => {
+
+            console.log(data);
+            const user  = await User.findOne(options={where:{id: data.to_user}});
+            if(user){
+                var receiver_socket = user.socket_id;
+                console.log("receiver_Socket: "+ receiver_socket);  
+
+                const message_inst = Message.build({ to_user: data.to_user,
+                    body: data.body,
+                    from_user: socket.user.id
+                });
+                await message_inst.save();
+
+                message = {
+                    "to_user":data.to_user,
+                    "body":data.body,
+                    "createdAt":message_inst.createdAt,
+                    "from_user": socket.user.id
+
+                }
+
+
+                socket.to(receiver_socket).emit("new_message",message);
+                socket.emit("new_message",message);
+            }else{
+                console.log("not found");
+
+            }
+        
+
+    })
+
+
+
 });
 
 
@@ -92,6 +145,7 @@ io.on('connection',async(socket) => {
 
 app.get("/check_cookie/", authenticateJWT ,async (req,res) => {
     res.send({status:200, "info": "authenticated"});
+    
 });
 
 app.get("/get_chat_messages/", authenticateJWT, async (req,res) => {

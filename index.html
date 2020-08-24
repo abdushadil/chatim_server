@@ -6,13 +6,24 @@
     <title>Document</title>
 </head>
 <body>
-    
+    <button id="send-message">Send</button>
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js" integrity="sha512-v8ng/uGxkge3d1IJuEo6dJP8JViyvms0cly9pnbfRxT6/31c3dRWxIiwGnMSWwZjHKOuY3EVmijs7k1jz/9bLA==" crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script>
     var socket = io('http://localhost:8000/', {transports: ['websocket'],query:"token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFiZHVzaEBjaGF0aW0uY29tIiwiaWQiOjEsIm5hbWUiOiJBYmR1c2ggQWRpbCIsInByb2ZpbGVfcGljdHVyZSI6Ii9tZWRpYS91c2Vyc19wcm9maWxlLzFfcHJvZmlsZS5qcGVnIiwiaWF0IjoxNTk4MjczNDkzfQ.HALqMPh-s97-aB1TduyJPgHuZW5yNIlJVdU3oXGn7Nw"});
-    socket.on("disconnected",()=>{
-        console.log("not authenticated");
-    });
+    socket.on("new_messages", (data) => {
+        console.log(data);
+    })
+
+    socket.on("new_message", (data) => {
+        console.log(data);
+    })
+
+
+    jQuery("#send-message").click(function(){
+        socket.emit("new_message",{to_user:2,body:"Hey There"});
+    })
+
 </script>
 </html>
