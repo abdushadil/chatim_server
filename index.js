@@ -187,14 +187,72 @@ app.get("/get_chats/", authenticateJWT, async (req, res) => {
                 { to_user: req.user.id, from_user: id }
                 ),
             order:[
-                ['createdAt', 'DESC']
+                ['createdAt', 'ASC']
             ],
             attributes:['is_read','is_received','body','from_user','to_user','createdAt']
             }
           );
 
         user.last_message = messages[0];
+        var message_date = user.last_message.createdAt;
+
+        var today = Date.now();
+        var now = new Date(today)
+
+        var dif = now.getTime() - message_date.getTime();
+        var Seconds_from_T1_to_T2 = dif / 1000;
+        var Seconds_Between_Dates = Math.abs(Seconds_from_T1_to_T2);
+        
+        var elapsed_time = parseInt(Seconds_Between_Dates);
+        if(elapsed_time < 60){
+            user.elapsed_time = elapsed_time + " seconds ago"
+        }else if(elapsed_time > 60 && elapsed_time <= 3600 ){
+            user.elapsed_time = parseInt(elapsed_time/60) +" minutes ago"
+        }else if(elapsed_time > 3600 && elapsed_time <= 86400){
+            console.log(elapsed_time)
+            user.elapsed_time = parseInt(elapsed_time/60/60) +" hours ago"
+        }else if(elapsed_time > 86400 && elapsed_time <= 604800 ){
+            if(parseInt(elapsed_time/60/60/24) == 1){
+                user.elapsed_time = parseInt(elapsed_time/60/60/24) +" day ago"
+            }else{
+                user.elapsed_time = parseInt(elapsed_time/60/60/24) +" days ago"
+            }
+        }else if(elapsed_time > 604800 && elapsed_time <= 2419200){
+            if(parseInt(elapsed_time/60/60/24/7) == 1){
+                user.elapsed_time = parseInt(elapsed_time/60/60/24/7) +" week ago"
+            }else{
+                user.elapsed_time = parseInt(elapsed_time/60/60/24/7) +" weeks ago"
+            }
+            
+        }else if(elapsed_time > 2419200){
+            if(parseInt(elapsed_time/60/60/24/7/4) == 1){
+                user.elapsed_time = parseInt(elapsed_time/60/60/24/7/4) +" month ago"
+            }else{
+                user.elapsed_time = parseInt(elapsed_time/60/60/24/7/4) +" months ago"
+            }
+        }
+        
+    // else:
+    //     if last_dif[0] < 60:
+    //         review['elapsed_time'] = str(last_dif[0])+" minutes ago"
+    //     if last_dif[0] >= 60 and last_dif[0] < 1440:
+    //         passed = math.floor(last_dif[0]/60)
+    //         if passed == 1:
+    //             review['elapsed_time'] = str(math.floor(last_dif[0]/60))+" hour ago"
+    //         else:
+    //             review['elapsed_time'] = str(math.floor(last_dif[0]/60))+" hours ago"
+        
+    //     if last_dif[0] >= 1440:
+    //         passed = math.floor(last_dif[0]/1440)
+    //         if passed == 1:
+    //             review['elapsed_time'] = str(math.floor(last_dif[0]/1440))+" day ago"
+    //         else:
+    //             review['elapsed_time'] = str(math.floor(last_dif[0]/1440))+" days ago"
+        
+
         chats.push(user)
+
+
     }
 
 
