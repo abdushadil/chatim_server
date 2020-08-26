@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Aug 24, 2020 at 03:57 PM
+-- Generation Time: Aug 26, 2020 at 08:40 AM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.2.33
 
@@ -47,9 +47,33 @@ INSERT INTO `messages` (`id`, `from_user`, `to_user`, `body`, `createdAt`, `upda
 (2, 1, 2, 'Hey I am user 1', '2020-08-24 11:31:06', '2020-08-24 11:31:06', 0, 0),
 (3, 2, 1, 'Hi, User 1', '2020-08-24 11:31:18', '2020-08-24 11:31:18', 0, 0),
 (4, 2, 1, 'How Are You ?', '2020-08-24 11:31:25', '2020-08-24 11:31:25', 0, 0),
-(5, 1, 2, 'Doing great what about you?', '2020-08-24 11:31:35', '2020-08-24 11:31:35', 0, 0),
+(5, 1, 2, 'Doing great what about you?', '2020-08-23 11:31:35', '2020-08-24 11:31:35', 0, 0),
 (6, 2, 1, 'I am fine thanks for asking', '2020-08-24 11:31:46', '2020-08-24 11:31:46', 0, 0),
-(7, 3, 1, 'Hi 1 I am three', '2020-08-24 11:32:03', '2020-08-24 11:32:03', 0, 0);
+(7, 3, 1, 'Hi 1 I am three', '2020-08-24 11:32:03', '2020-08-24 11:32:03', 0, 0),
+(12, 3, 1, 'sdfgh', '2020-06-14 05:59:04', '0000-00-00 00:00:00', 0, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `statuses`
+--
+
+CREATE TABLE `statuses` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `status_type` text NOT NULL,
+  `status_image` text NOT NULL DEFAULT '',
+  `text` text NOT NULL DEFAULT '',
+  `createdAt` datetime NOT NULL,
+  `updatedAt` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `statuses`
+--
+
+INSERT INTO `statuses` (`id`, `user_id`, `status_type`, `status_image`, `text`, `createdAt`, `updatedAt`) VALUES
+(1, 1, 'text', '', 'first status yaay', '2020-08-26 06:33:09', '2020-08-26 06:33:09');
 
 -- --------------------------------------------------------
 
@@ -62,17 +86,18 @@ CREATE TABLE `users` (
   `email` text NOT NULL,
   `password` text NOT NULL,
   `name` text NOT NULL,
-  `profile_picture` text NOT NULL
+  `profile_picture` text NOT NULL,
+  `socket_id` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `email`, `password`, `name`, `profile_picture`) VALUES
-(1, 'abdush@chatim.com', '1234', 'Abdush Adil', '/media/users_profile/1_profile.jpeg'),
-(2, 'test@chatim.com', '1234', 'Test Chatim', ''),
-(3, 'einas@chatim.com', '1234', 'Einas', '');
+INSERT INTO `users` (`id`, `email`, `password`, `name`, `profile_picture`, `socket_id`) VALUES
+(1, 'abdush@chatim.com', '1234', 'Abdush Adil', '/media/users_profile/1_profile.jpeg', 'h1kc0yTJ2Q1fId0LAAAT'),
+(2, 'test@chatim.com', '1234', 'Test Chatim', '', ''),
+(3, 'einas@chatim.com', '1234', 'Einas', '', '');
 
 --
 -- Indexes for dumped tables
@@ -82,6 +107,12 @@ INSERT INTO `users` (`id`, `email`, `password`, `name`, `profile_picture`) VALUE
 -- Indexes for table `messages`
 --
 ALTER TABLE `messages`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `statuses`
+--
+ALTER TABLE `statuses`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -98,7 +129,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
+-- AUTO_INCREMENT for table `statuses`
+--
+ALTER TABLE `statuses`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `users`
