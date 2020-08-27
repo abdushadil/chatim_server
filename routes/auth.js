@@ -49,31 +49,5 @@ auth_router.get("/check_cookie/", authenticateJWT ,async (req,res) => {
 }); 
 
 
-auth_router.post('/change_profile',authenticateJWT, async (req,res) => {
-    let image_data = req.body.image;
-    let base64Image = image_data.split(';base64,').pop();
-
-    var ext = image_data.substring("data:image/".length, image_data.indexOf(";base64"));
-    var exts = ["jpg","jpeg","png"]
-    
-    if(!exts.includes(ext)){
-        return res.send({status:401,info: "not valid image file"});
-    }
-
-    
-    var file_path = "/media/users_profile/"+req.user.id +"_"+"profile."+ext;
-    fs.writeFile("."+file_path, base64Image, {encoding: 'base64'}, function(err) {
-        console.log(err)
-    console.log('File created');
-
-    })
-
-    await User.update({profile_picture: file_path},{where:{id: req.user.id}});
-
-    res.send({status:200,info: "profile picture chganged"});
-
-})
-
-
   
 module.exports = auth_router;

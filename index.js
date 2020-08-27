@@ -7,16 +7,38 @@ const { Sequelize, Model, DataTypes } = require('sequelize');
 var auth_router = require('./routes/auth.js')
 var chat_router = require('./routes/chat.js')
 var status_router = require('./routes/status.js')
+var social_router = require('./routes/social.js')
+const  User     = require('./models/sequelize').User;
+const  Message     = require('./models/sequelize').Message;
+const  Status     = require('./models/sequelize').Status;
 
+
+const authenticateJWT = (req, res, next) => {
+    const authHeader = req.headers.authorization;
+    if (authHeader) {
+        const token = authHeader.split(' ')[1];
+
+        jwt.verify(token, accessTokenSecret, (err, user) => {
+            if (err) {
+                return res.send({status: 403, info: "not authenticated"}).sendStatus(403);
+            }
+            req.user = user;
+            next();
+        });
+
+    } else {
+        return res.send({status: 403, info: "not authenticated"}).sendStatus(403);
+    }
+}
 
 app.use('/media/users_profile', express.static('media/users_profile'))
 app.use('/media/status_pics', express.static('media/status_pics'))
 app.use(express.json({limit: '10mb', extended: true}));
 
-
 app.use('/auth', auth_router);
 app.use('/chat', chat_router);
 app.use('/status', status_router);
+app.use('/social', social_router);
 
 
 

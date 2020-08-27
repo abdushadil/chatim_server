@@ -13,6 +13,7 @@ User =  sequelize.define('users', {
     name: DataTypes.STRING,
     profile_picture: DataTypes.STRING,
     socket_id: DataTypes.STRING,
+    contacts: {'type': DataTypes.STRING, 'default': '[]'},
     last_message: Sequelize.VIRTUAL,
     elapsed_time: Sequelize.VIRTUAL
 
@@ -40,9 +41,18 @@ Status = sequelize.define('statuses', {
 }, {
     timestamps: true, sequelize, modelName: 'statuses' });
 
+Post = sequelize.define('posts', {
+    user_id: DataTypes.INTEGER,
+    text: {type: DataTypes.STRING,default: ""},
+    // is_received: {'type': DataTypes.BOOLEAN, 'default': false},
+    // is_read: {'type': DataTypes.BOOLEAN, 'default': false}
+}, {
+    timestamps: true, sequelize, modelName: 'posts' });
+
 
 module.exports = {
     User,
     Message,
-    Status
+    Status,
+    Post
   }
