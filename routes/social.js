@@ -72,9 +72,7 @@ social_router.post('/change_profile',authenticateJWT, async (req,res) => {
     if(!exts.includes(ext)){
         return res.send({status:401,info: "not valid image file"});
     }
-    
 
-    
     var file_path = "/media/users_profile/"+req.user.id +"_"+"profile."+ext;
     fs.writeFile("."+file_path, base64Image, {encoding: 'base64'}, function(err) {
         console.log(err)
