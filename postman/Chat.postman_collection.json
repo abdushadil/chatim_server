@@ -1,0 +1,80 @@
+{
+	"info": {
+		"_postman_id": "d9a9e5f8-5b6a-442f-a922-07dc7847c5b4",
+		"name": "Chat",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get Chats",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFiZHVzaEBjaGF0aW0uY29tIiwiaWQiOjEsIm5hbWUiOiJBYmR1c2ggQWRpbCIsInByb2ZpbGVfcGljdHVyZSI6Ii9tZWRpYS91c2Vyc19wcm9maWxlLzFfcHJvZmlsZS5qcGVnIiwiaWF0IjoxNTk4MjczNDkzfQ.HALqMPh-s97-aB1TduyJPgHuZW5yNIlJVdU3oXGn7Nw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{api_url}}/chat/get_chats/",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"chat",
+						"get_chats",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Chat Messages",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFiZHVzaEBjaGF0aW0uY29tIiwiaWQiOjEsIm5hbWUiOiJBYmR1c2ggQWRpbCIsInByb2ZpbGVfcGljdHVyZSI6Ii9tZWRpYS91c2Vyc19wcm9maWxlLzFfcHJvZmlsZS5qcGVnIiwiaWF0IjoxNTk4MjczNDkzfQ.HALqMPh-s97-aB1TduyJPgHuZW5yNIlJVdU3oXGn7Nw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"user_id\":2\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{api_url}}/chat/get_chat_messages/",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"chat",
+						"get_chat_messages",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
